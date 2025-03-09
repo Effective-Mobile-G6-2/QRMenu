@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package proto;
+
+service Menu {
+
+}
+
+message CreatePositionResponse{
+
+}
+
+message CreatePositionRequest{
+
+}
+
+message GetAllPositionsResponse{
+
+}
+
+message GetAllPositionsRequest{
+
+}
+
+message DeletePositionResponse{
+
+}
+
+message DeletePositionRequest{
+
+}
+
+message UpdatePositionResponse{
+
+}
+
+message UpdatePositionRequest{
+
+}

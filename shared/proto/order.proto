@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package proto;
+
+import "google/protobuf/empty.proto";
+//import "google/rpc/status.proto"; // Для структурированных ошибок
+
+message Order {
+  string id = 1;
+  repeated string positions = 2;
+  string table_id = 3;
+  string status = 4;
+}
+
+service OrderService {
+  // CreateOrder создает новый заказ.
+  // Возможные ошибки:
+  // - INVALID_ARGUMENT: Некорректные данные в запросе (например, пустой id или positions).
+  // - INTERNAL: Внутренняя ошибка сервера.
+  rpc CreateOrder(Order) returns (google.protobuf.Empty);
+
+  // GetOrders возвращает список всех текущих заказов.
+  // Возможные ошибки:
+  // - INTERNAL: Внутренняя ошибка сервера.
+  rpc GetOrders(GetOrdersRequest) returns (GetOrdersResponse);
+
+  // DeleteOrder удаляет заказ по ID.
+  // Возможные ошибки:
+  // - INVALID_ARGUMENT: Некорректный ID заказа.
+  // - NOT_FOUND: Заказ с указанным ID не найден.
+  // - INTERNAL: Внутренняя ошибка сервера.
+  rpc DeleteOrder(DeleteOrderRequest) returns (DeleteOrderResponse);
+
+  // SetOrderStatus изменяет статус заказа по ID.
+  // Возможные ошибки:
+  // - INVALID_ARGUMENT: Некорректный ID заказа.
+  // - NOT_FOUND: Заказ с указанным ID не найден.
+  // - INTERNAL: Внутренняя ошибка сервера.
+  rpc SetOrderStatus(SetOrderStatusRequest) returns (google.protobuf.Empty);
+}
+
+message GetOrdersRequest {}
+
+message GetOrdersResponse {
+  repeated Order orders = 1;
+}
+
+message DeleteOrderRequest {
+  string id = 1;
+}
+
+message DeleteOrderResponse {}
+
+message SetOrderStatusRequest {
+  string id = 1;
+  string status = 2;
+}
