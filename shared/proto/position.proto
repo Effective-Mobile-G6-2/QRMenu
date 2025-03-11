@@ -2,38 +2,68 @@ syntax = "proto3";
 
 package proto;
 
-service Menu {
+import "google/protobuf/empty.proto";
 
+service Menu {
+    // CreatePosition создает новую позицию в меню.
+    // Возможные ошибки:
+    // - INVALID_ARGUMENT: Некорректные данные в запросе (например, пустой name или price).
+    // - INTERNAL: Внутренняя ошибка сервера.
+    rpc CreatePosition(CreatePositionRequest) returns (CreatePositionResponse);
+
+    // GetAllPositions возвращает все позиции в меню.
+    // Возможные ошибки:
+    // - INVALID_ARGUMENT: Некорректные данные в запросе (пустой restaurant_id).
+    // - INTERNAL: Внутренняя ошибка сервера.
+    rpc GetAllPositions(GetAllPositionsRequest) returns (GetAllPositionsResponse);
+
+    // UpdatePosition обновляет позицию в меню.
+    // Возможные ошибки:
+    // - INVALID_ARGUMENT: Некорректные данные в запросе (например, пустой или не существующий 
+    //   restaurant_id или position).
+    // - INTERNAL: Внутренняя ошибка сервера.
+    rpc UpdatePosition(UpdatePositionRequest) returns (google.protobuf.Empty);
+
+    // DeletePosition удаляет позицию в меню.
+    // Возможные ошибки:
+    // - INVALID_ARGUMENT: Некорректные данные в запросе (например, пустой или не сущуствующий 
+    //   restaurant_id или position_id).
+    // - INTERNAL: Внутренняя ошибка сервера.
+    rpc DeletePositions(DeletePositionRequest) returns (google.protobuf.Empty);
 }
 
-message CreatePositionResponse{
-
+message Position {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+    int64 price = 4;
 }
 
 message CreatePositionRequest{
-
+    int64 restaurant_id = 1;
+    Position pos = 2;
 }
 
-message GetAllPositionsResponse{
-
+message CreatePositionResponse{
+    string id = 1;
 }
 
 message GetAllPositionsRequest{
-
+    int64 restaurant_id = 1;
 }
 
-message DeletePositionResponse{
-
+message GetAllPositionsResponse{
+    repeated Position pos = 1;
 }
+
 
 message DeletePositionRequest{
-
+    int64 restaurant_id = 1;
+    string position_id = 2;
 }
 
-message UpdatePositionResponse{
-
-}
 
 message UpdatePositionRequest{
-
+    int64 restaurant_id = 1;
+    Position pos = 2;
 }
